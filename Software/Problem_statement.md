@@ -5,8 +5,6 @@ Find the minimum number of moves it would require the robot to collect all the a
 
 These buildings aren't as straightforward as they seem. They have some special doors which can be unlocked only if you have the particular artifact required.
 
-**Points:** 100
-
 ---
 
 ## Task Description
