@@ -1,0 +1,406 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=1in}
+
+\title{Planetary Gearbox Design for Battlebot}
+\author{Task 2}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+This document outlines the design and analysis of a high-torque planetary gearbox for a battlebot drive system. The goal is to develop a mechanically robust and efficient configuration that performs reliably under combat conditions and maintains functionality even after partial damage. I have designed this doc structurally for better understanding of the task.
+
+\section*{Index}
+\begin{enumerate}
+    \item \hyperref[sec:gear]{Gear System Design}
+    \item \hyperref[sec:torque]{Torque Analysis}
+    \item \hyperref[sec:material]{Material Selection for Gearbox Components}
+    \item \hyperref[sec:damage]{Damaged Planetary Case Performance}
+\end{enumerate}
+
+\section*{Things to Focus On}
+The design approach revolves around the following core requirements:
+\begin{itemize}
+    \item \textbf{Efficiency}: Optimize for minimal energy loss and smooth power transmission.
+    \item \textbf{Post-Damage Functionality}: Ensure the gearbox continues functioning even after partial failure (e.g., loss of a planet gear).
+    \item \textbf{Durability}: Withstand high mechanical shocks, torque spikes, and continuous operation under combat conditions.
+\end{itemize}
+
+\section*{Parameters That Can Be Changed}
+To meet the design objectives, the following parameters are configurable:
+\begin{itemize}
+    \item Number of gear teeth in each component (sun, planet, ring)
+    \item Gear ratio
+    \item Materials used for gears, bearings, and carrier
+\end{itemize}
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.6pt}
+\vspace{1em}
+
+\section*{0   Gear System Design} \label{sec:gear}
+
+\subsection*{Gear Ratio and Parametric Design (Based on Things to Focus)}
+
+Let:
+\begin{itemize}
+    \item \( N_s = n \): Sun gear teeth
+    \item \( N_r = r \): Ring gear teeth
+    \item \( N_p = p \): Planet gear teeth
+\end{itemize}
+
+\subsubsection*{Gear Ratio Equation}
+\[
+G = 1 + \frac{N_r}{N_s}
+\]
+Targeting \( G = 20 \):
+\[
+20 = 1 + \frac{N_r}{N_s} \Rightarrow \frac{N_r}{N_s} = 19 \Rightarrow N_r = 19n
+\]
+
+\subsubsection*{Meshing Condition}
+\[
+N_r = N_s + 2N_p \Rightarrow 19n = n + 2p \Rightarrow p = 9n
+\]
+
+\subsubsection*{Final Configuration}
+\begin{itemize}
+    \item Sun Gear: \( N_s = n \)
+    \item Planet Gear: \( N_p = 9n \)
+    \item Ring Gear: \( N_r = 19n \)
+
+\end{itemize}
+
+Since we arent specified the radii or modular Dimension  ig we should critically consider this mathmatical relation to ensure the design is mathematically sound and physically constructible according to requirements. still let me assume n for best performance according to our design approach (Things to focus on mentioned above)
+
+\subsection*{Selection of Sun Gear Teeth (\( N_s \))}
+
+To meet the core design goals—\textbf{efficiency}, \textbf{post-damage functionality}, and \textbf{durability}—the number of sun gear teeth must be selected carefully to maintain a balance between mechanical performance and physical constructibility.
+
+\paragraph{Target Gear Ratio:}
+We are designing for a reduction ratio of approximately \( G = 20:1 \), using the standard planetary gear formula (ring fixed, carrier output):
+\[
+G = 1 + \frac{N_r}{N_s}
+\Rightarrow N_r = 19N_s
+\]
+
+\paragraph{Meshing Condition:}
+To ensure correct gear engagement:
+\[
+N_p = \frac{N_r - N_s}{2} = 9N_s
+\]
+
+\paragraph{Selected Configuration:}
+\begin{itemize}
+    \item Sun Gear Teeth: \( N_s = 10 \)
+    \item Planet Gear Teeth: \( N_p = 90 \)
+    \item Ring Gear Teeth: \( N_r = 190 \)
+\end{itemize}
+
+\paragraph{Justification:}
+\begin{itemize}
+    \item All gears have integer tooth counts that satisfy the meshing and symmetry conditions.
+    \item Supports 3-planet configurations for enhanced torque distribution and redundancy.
+    \item Maintains a moderate gear size, allowing the teeth to withstand high contact loads without becoming too fragile.
+    \item Enables a compact design without compromising efficiency, making it suitable for high-impact battlebot environments.
+\end{itemize}
+
+\textbf{Conclusion:} Choosing \( N_s = 10 \) ensures that the gearbox meets the desired 20:1 reduction ratio while satisfying all mechanical constraints for durability, load-sharing, and continued operation in the event of planet gear failure.
+
+
+\textbf{Estimated Gearbox efficiency:} \(85\%\text{ to }90\%\) [due to mesh and dissipative actions]
+
+\subsubsection*{Post-Damage Functionality}
+\begin{itemize}
+    \item Use 4 planet gears for load redundancy
+    \item Floating carrier design to allow redistribution
+\end{itemize}
+
+\subsubsection*{Durability Design}
+\begin{itemize}
+    \item Double support for carrier to avoid deflection
+    \item Root fillets and 20--25° pressure angle for strength
+\end{itemize}
+
+                    \subsection*{Comparison: 3-Planet vs. 4-Planet Configurations}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}p{4.5cm}p{4.5cm}p{4.5cm}@{}}
+\toprule
+\textbf{Feature} & \textbf{3-Planet Configuration} & \textbf{4-Planet Configuration} \\ \midrule
+Load sharing & Medium & High \\
+Efficiency & Slightly better & Slightly reduced \\
+Redundancy & Poor & Good \\
+Weight & Lower & Higher \\
+Design complexity & Simpler & More complex (tighter spacing) \\
+Manufacturing cost & Lower & Slightly higher \\
+Recommended for & Compact, low-medium torque & High torque, impact-heavy use \\ 
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\section*{Planetary Configuration Choice}
+
+After careful evaluation of the trade-offs between 3-planet and 4-planet gear configurations, the final decision is to proceed with a \textbf{3-planet system}. 
+
+While a 4-planet system offers better load distribution and improved redundancy in case of gear failure, it introduces several drawbacks:
+\begin{itemize}
+    \item Increased system weight, which negatively impacts the battlebot’s agility and speed.
+    \item Higher design and manufacturing complexity due to tighter spacing constraints between planets.
+    \item Slightly reduced mechanical efficiency due to more internal contact surfaces.
+\end{itemize}
+
+Given that weight is a critical factor in combat robotics, where rapid maneuvering and speed are essential, the advantages of a lighter and simpler \textbf{3-planet system} outweigh the additional robustness offered by a 4-planet system.
+
+Now we have a foundational framework to work on; we'll proceed to the next section.
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.6pt}
+\vspace{1em}
+
+\section{Torque Analysis} \label{sec:torque}
+
+In this section, the maximum output torque and output speed of the planetary gearbox are calculated, taking into account the efficiency losses due to internal friction and gear meshing. Additionally, the forces acting on key components—such as the sun gear, planet gears, and carrier—are analyzed under combat-like conditions where sudden torque spikes and impact loads are expected.
+
+\subsection*{System Parameters}
+\begin{itemize}
+    \item Motor torque: \( T_{\text{motor}} = 0.5 \, \text{Nm} \)
+    \item Motor speed: \( \omega_{\text{motor}} = 13{,}000 \, \text{RPM} \)
+    \item Gear reduction ratio: \( G = 20:1 \)
+    \item Gearbox efficiency: \( \eta = 85\% = 0.85 \)
+\end{itemize}
+
+\subsection*{Output Torque and Speed}
+The ideal output torque without losses is:
+\[
+T_{\text{out, ideal}} = G \cdot T_{\text{motor}} = 20 \cdot 0.5 = 10 \, \text{Nm}
+\]
+
+Considering efficiency:
+\[
+T_{\text{out, actual}} = T_{\text{out, ideal}} \cdot \eta = 10 \cdot 0.85 = 8.5 \, \text{Nm}
+\]
+
+The output speed at the carrier is:
+\[
+\omega_{\text{out}} = \frac{\omega_{\text{motor}}}{G} = \frac{13{,}000}{20} = 650 \, \text{RPM}
+\]
+
+\subsection*{Tangential Force on Sun Gear}
+Assuming the pitch radius of the sun gear is \( r_s = 10 \, \text{mm} = 0.01 \, \text{m} \), the tangential force exerted on the sun gear is:
+\[
+F_t = \frac{T_{\text{out, actual}}}{r_s} = \frac{8.5}{0.01} = 850 \, \text{N}
+\]
+
+\subsection*{Force Distribution on Planet Gears}
+In a 3-planet configuration, the total load is distributed approximately equally across the planets:
+\[
+F_{\text{planet}} = \frac{F_t}{3} = \frac{850}{3} \approx 283.33 \, \text{N}
+\]
+
+Each planet gear must be designed to handle this load while maintaining contact precision and resisting wear under dynamic loads.
+
+\subsection*{Carrier Load Consideration}
+The carrier must absorb the reaction forces from all planet gears and transmit the torque to the output shaft. As the planets are spaced 120° apart, a symmetrical force system is established, but the resulting radial forces must be reacted through bearings supporting the carrier. Special attention must be paid to carrier deflection and material yield under asymmetric loading (e.g., if one planet fails).
+
+\subsection*{Torque Design Margin}
+To ensure durability under unpredictable impact forces and collisions, a design safety factor is applied:
+\[
+T_{\text{design}} = SF \cdot T_{\text{out, actual}} = 2 \cdot 8.5 = 17 \, \text{Nm}
+\]
+
+This accounts for possible overloading, gear jamming, and shock impacts during combat.
+
+\subsection*{Summary}
+\begin{itemize}
+    \item \textbf{Max Output torque (with losses)}: \( 8.5 \, \text{Nm} \)
+    \item \textbf{Output speed}: \( 650 \, \text{RPM} \)
+    \item \textbf{Tangential force on sun gear}: \( 850 \, \text{N} \)
+    \item \textbf{Force per planet gear (3-planet system)}: \( \sim283 \, \text{N} \)
+    \item \textbf{Design torque with safety factor}: \( 17 \, \text{Nm} \)
+\end{itemize}
+
+This torque analysis provides the foundational loading conditions for material selection, structural design, and dynamic simulations in later phases.
+
+\subsection*{Calculated Forces During Combat Conditions}
+
+To simulate the forces acting on each component under battle stress, we consider a peak torque multiplier of \( 2 \times \) the nominal output torque to represent sudden impacts or torque reversals.
+
+\subsubsection*{Peak Output Torque}
+\[
+T_{\text{peak}} = 2 \cdot T_{\text{actual}} = 2 \cdot 8.5 = 17 \, \text{Nm}
+\]
+
+\subsubsection*{Tangential Force on Sun Gear}
+Using the sun gear pitch radius \( r_s = 0.01 \, \text{m} \):
+\[
+F_{\text{t,peak}} = \frac{T_{\text{peak}}}{r_s} = \frac{17}{0.01} = 1700 \, \text{N}
+\]
+
+\subsubsection*{Force on Each Planet Gear (3-Planet Configuration)}
+Assuming equal load distribution:
+\[
+F_{\text{planet,peak}} = \frac{F_{\text{t,peak}}}{3} = \frac{1700}{3} \approx 566.7 \, \text{N}
+\]
+
+\subsubsection*{Radial Load on Ring Gear}
+Each planet transmits force to the fixed ring gear. The combined radial force on the ring is:
+\[
+F_{\text{ring,peak}} = 3 \cdot F_{\text{planet,peak}} = 3 \cdot 566.7 = 1700 \, \text{N}
+\]
+
+\subsubsection*{Shear Force on Planet Pins}
+Each planet pin must resist the tangential force exerted by the planet gear:
+\[
+F_{\text{shear,pin}} = F_{\text{planet,peak}} = 566.7 \, \text{N}
+\]
+
+\subsubsection*{Carrier Output Force (At Carrier Radius)}
+If the carrier output shaft has a radius \( r_c = 0.015 \, \text{m} \), then:
+\[
+F_{\text{carrier}} = \frac{T_{\text{peak}}}{r_c} = \frac{17}{0.015} \approx 1133.3 \, \text{N}
+\]
+
+\subsection*{Summary of Peak Combat Forces}
+\begin{itemize}
+    \item Peak tangential force on sun gear: \( 1700 \, \text{N} \)
+    \item Force per planet gear: \( \approx 567 \, \text{N} \)
+    \item Radial force on ring gear: \( 1700 \, \text{N} \)
+    \item Shear force per planet pin: \( \approx 567 \, \text{N} \)
+    \item Carrier output force (at 15 mm radius): \( \approx 1133 \, \text{N} \)
+\end{itemize}
+
+These values serve as input for stress analysis, bearing selection, and verification of mechanical limits in the design.
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.6pt}
+\vspace{1em}
+
+\section{Material Selection for Gearbox Components} \label{sec:material}
+
+Material selection is critical for ensuring that the gearbox can withstand high torque, combat impacts, and continuous operational stress without deformation, fatigue, or failure. The materials chosen prioritize a balance between mechanical strength, impact resistance, machinability, and weight control.
+
+\subsection*{1. Sun Gear}
+\begin{itemize}
+    \item \textbf{Material}: 4340 Alloy Steel (Quenched and Tempered)
+    \item \textbf{Properties}:
+        \begin{itemize}
+            \item High tensile strength: \( > 1000 \, \text{MPa} \)
+            \item Excellent toughness under impact
+            \item Good wear resistance and heat treatable to HRC 45--50
+        \end{itemize}
+    \item \textbf{Justification}: As the primary torque input gear, the sun gear must resist high tangential force and dynamic impact loading from the motor shaft.
+\end{itemize}
+
+\subsection*{2. Planet Gears}
+\begin{itemize}
+    \item \textbf{Material}: 8620 Case-Hardened Steel
+    \item \textbf{Properties}:
+        \begin{itemize}
+            \item Core ductility with surface hardness up to HRC 60
+            \item Good fatigue and pitting resistance
+            \item Well-suited for carburizing or nitriding
+        \end{itemize}
+    \item \textbf{Justification}: Planet gears are under constant cyclic loading and must survive high contact pressure from both sun and ring gear teeth.
+\end{itemize}
+
+\subsection*{3. Ring Gear}
+\begin{itemize}
+    \item \textbf{Material}: 4140 Steel (Heat Treated)
+    \item \textbf{Properties}:
+        \begin{itemize}
+            \item Strong core with moderate machinability
+            \item Good impact resistance and internal tooth wear resistance
+        \end{itemize}
+    \item \textbf{Justification}: The ring gear serves as the fixed reaction surface; it must absorb radial force without deforming or wearing unevenly under combat stress.
+\end{itemize}
+
+\subsection*{4. Planet Gear Pins and Shafts}
+\begin{itemize}
+    \item \textbf{Material}: 52100 Bearing Steel (Hardened)
+    \item \textbf{Properties}:
+        \begin{itemize}
+            \item Very high surface hardness and wear resistance
+            \item Withstands shear force and rotational fatigue
+        \end{itemize}
+    \item \textbf{Justification}: Planet pins experience bending and shear loads; hardened bearing steel minimizes wear and extends life under extreme force.
+\end{itemize}
+
+\subsection*{5. Carrier Plate}
+\begin{itemize}
+    \item \textbf{Material}: 7075-T6 Aluminum Alloy
+    \item \textbf{Properties}:
+        \begin{itemize}
+            \item High strength-to-weight ratio
+            \item Tensile strength: \( \sim 500 \, \text{MPa} \)
+            \item Excellent fatigue resistance
+        \end{itemize}
+    \item \textbf{Justification}: The carrier must remain lightweight to maintain agility, yet strong enough to hold all planet pins under torque. 7075-T6 provides structural integrity without excessive mass.
+\end{itemize}
+
+\subsection*{Material Selection Summary}
+\begin{itemize}
+    \item Gears use high-strength, impact-resistant steels with hardened surfaces.
+    \item Pins and shafts are made from wear-resistant bearing steel.
+    \item The carrier is a lightweight but high-strength aluminum alloy.
+\end{itemize}
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.6pt}
+\vspace{1em}
+
+
+\section{Damaged Planetary Case Performance} \label{sec:damage}
+
+Planetary gearboxes are valued for their ability to share torque across multiple planet gears, improving load distribution and mechanical efficiency. However, combat scenarios may lead to the failure or damage of one planet gear due to excessive impact, tooth shearing, or pin breakage. This section analyzes how the gearbox would perform under such a failure and what design strategies can mitigate its consequences.
+
+\subsection*{Scenario: One Planet Gear Fails}
+
+In a 3-planet configuration:
+\begin{itemize}
+    \item Torque is normally distributed equally: \( \sim 33\% \) per planet.
+    \item If one planet fails, the load redistributes to the remaining two.
+    \item This doubles the torque per remaining gear: from \( \sim283 \, \text{N} \) to \( \sim566 \, \text{N} \) each (from prior analysis).
+\end{itemize}
+
+\subsubsection*{Consequences of a Failed Planet Gear}
+\begin{itemize}
+    \item \textbf{Load imbalance:} Uneven force vectors introduce vibrations and wobble in the carrier.
+    \item \textbf{Increased stress:} The two remaining planet gears and pins experience double the force, which may exceed their yield or fatigue limits.
+    \item \textbf{Tooth misalignment:} Non-uniform spacing may cause backlash, increased wear, or even binding.
+    \item \textbf{Gear carrier deformation:} Carrier experiences eccentric torque loading, possibly leading to flexing or bearing misalignment.
+\end{itemize}
+
+\subsection*{Mitigation and Design Strategies}
+
+To enhance post-damage survivability:
+\begin{itemize}
+    \item \textbf{Reinforce planet pins and bearings:} Ensure surviving planets can temporarily carry increased load.
+    \item \textbf{Use floating carrier design:} Allows planets to adapt to small misalignments post-failure.
+    \item \textbf{Pre-stress or preload bearings:} Reduces backlash and dampens vibration under asymmetrical loading.
+    \item \textbf{Quick access housing:} Allows damaged planet gears to be replaced between matches.
+\end{itemize}
+
+\subsection*{Conclusion}
+
+In the event of a planet gear failure, the gearbox can remain operational in the short term, but:
+\begin{itemize}
+    \item The system will exhibit reduced efficiency and balance.
+    \item Long-term operation without repair may lead to total gearbox failure.
+\end{itemize}
+
+\vspace{1em}
+\noindent\rule{\linewidth}{0.6pt}
+\vspace{1em}
+
+
+\end{document}
