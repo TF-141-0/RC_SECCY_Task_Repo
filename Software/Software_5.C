@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAXN 32  // Maximum size of the map
+#define MAXN 32  
 #define MAX_KEYS 7
 
 typedef struct {
@@ -51,7 +51,7 @@ int minMoves(char **grid, int rows, int cols) {
             }
         }
     total_keys = idx;
-    if (total_keys == 0) return 0; // No keys, no moves needed
+    if (total_keys == 0) return 0; 
 
     // Visited[x][y][key_mask]
     bool visited[MAXN][MAXN][1<<MAX_KEYS];
@@ -71,7 +71,7 @@ int minMoves(char **grid, int rows, int cols) {
             // Door check
             if (cell >= 'A' && cell <= 'Z') {
                 int key_bit = key_idx[(int)(cell-'A'+'a')] - 1;
-                if (key_bit < 0 || !(keys & (1<<key_bit))) continue; // Key not collected
+                if (key_bit < 0 || !(keys & (1<<key_bit))) continue; 
             }
             // Artifact collect
             if (cell >= 'a' && cell <= 'z') {
@@ -89,14 +89,8 @@ int minMoves(char **grid, int rows, int cols) {
     return -1;
 }
 
-// Sample main usage
 int main() {
     char *map1[] = {"@..a.", "###.#", "b.A.B"};
     int rows1 = 3, cols1 = 5;
     printf("%d\n", minMoves(map1, rows1, cols1)); // Output: 8
-
-    char *map2[] = {"@Aa"};
-    int rows2 = 1, cols2 = 3;
-    printf("%d\n", minMoves(map2, rows2, cols2)); // Output: -1
-    return 0;
 }
